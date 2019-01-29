@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="26px" viewBox="0 0 25 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 25</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="10.1595505 25.4851985 27.9680612 25.4851985 19.0638856 12.8109338"></polygon>
+        <filter x="-11.2%" y="-23.7%" width="144.9%" height="163.1%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="2" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <path d="M13,9.63344792 L0,27.4851985 L26.7288032,27.4851985 L14.6050092,10.8365647 C14.6524509,10.7713934 14.6807415,10.6908056 14.6807415,10.6024618 L14.6807415,5.6746446 C14.6807415,5.52556778 14.7631308,5.384773 14.8949537,5.31851663 L18.7837281,3.36395384 C19.0720906,3.23144111 19.0720906,2.80905678 18.7837281,2.668262 L13.5684861,0.04285351 C13.3048404,-0.0896592216 13,0.10082783 13,0.398981476 L13,1.06154513 L13,6.27923394 L13,9.63344792 Z" id="path-3"></path>
+        <filter x="-11.2%" y="-7.3%" width="129.9%" height="129.1%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="1" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.3 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Flow" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Other-States-for-Goal-Pod" transform="translate(-1314.000000, -332.000000)">
+            <g id="Progress-Bar" transform="translate(165.000000, 283.000000)">
+                <g id="progress-copy-4" transform="translate(611.000000, 20.000000)">
+                    <g id="Progress-bar" transform="translate(0.000000, 25.000000)">
+                        <g id="Mountain-Copy-3" transform="translate(535.000000, 4.000000)">
+                            <g id="Group-25">
+                                <g id="Fill-2" opacity="0.709999979">
+                                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                                    <use fill="#349C60" fill-rule="evenodd" xlink:href="#path-1"></use>
+                                </g>
+                                <g id="Combined-Shape">
+                                    <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                                    <use fill="#4CC57F" fill-rule="evenodd" xlink:href="#path-3"></use>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

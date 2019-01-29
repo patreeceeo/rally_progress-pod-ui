@@ -1,0 +1,150 @@
+<div class="program mission card" ng-class="{flipped: flipped}" ng-controller="ProgramPodCtrl">
+    <div class="face front" ng-attr-aria-hidden="{{flipped}}">
+        <div class="colorBackground" ng-style="::{'background-color': '#' + pod.program.card.backgroundColor}">
+            <div class="fullHeight">
+                <div class="contents">
+                    <div class="bodyHeader">
+                        <img alt="" ng-src="{{::pod.program.card.logoUrl}}"/>
+                    </div>
+                    <div class="lineDividerHeader"></div>
+                    <div id="goalPodFrontHeaderText-{{::uniqueId}}" class="bodyTitle">
+                        <div class="p18 light">
+                            <span translate>Milestone</span> #{{getCurrentMilestone().milestoneIndex + 1}}
+                        </div>
+                        <div class="subtitle h24 light reducedLineHeight">{{getCurrentMilestone().card.subTitle}}</div>
+                    </div>
+                    <div class="mobileFixedContents fadeOutTransition" ng-show="!isAnimating">
+                        <span class="weekField" aria-hidden="true" ng-if="podState.isInitialized">
+                            <div class="verticalCenter">
+                                <span class="dayCircle"
+                                      ng-repeat="day in [1,2,3,4,5,6,7,8,9,10].slice(0, getActivitiesCount(getCurrentMilestone()))"
+                                      ng-class="{active: day <= getCurrentMilestone().completedActivityCount + 1,
+                                                    'activeCircleFadeIn delay1': day === getCurrentMilestone().completedActivityCount + 1}">
+                                    <span class="whiteCircle"
+                                          ng-class="{zoomFadeIn: day === getCurrentMilestone().completedActivityCount}"
+                                          ng-show="day <= getCurrentMilestone().completedActivityCount">
+                                        <i class="icon-checkmark"
+                                           ng-show="day <= getCurrentMilestone().completedActivityCount"
+                                           ng-style="::{color: '#' + pod.program.card.backgroundColor}"></i>
+                                    </span>
+                                    <span class="lineConnector"
+                                          ng-show="day !== getCurrentMilestone().completedActivityCount"
+                                          ng-class="{active: day <= getCurrentMilestone().completedActivityCount - 1}"></span>
+                                    <span class="lineConnectorDotted" ng-show="day === getCurrentMilestone().completedActivityCount">
+                                        <span ng-class="{'moveRight delay0': day === getCurrentMilestone().completedActivityCount}">
+                                            <span class="lineConnectorDot"></span>
+                                            <span class="lineConnectorDot"></span>
+                                        </span>
+                                    </span>
+                                </span>
+                            </div>
+                        </span>
+                    </div>
+                    <div class="fixedCorner fadeOutTransition" ng-show="!isAnimating">
+                        <a class="ctaBtn p12 bold"
+                           ng-disabled="isAnimating"
+                           tabindex="{{!flipped ? 0 : -1}}"
+                           track-event
+                           event-category="dashboard_goal_pod_program_cta"
+                           event-label="{{::programEventLabel}}"
+                           scrub-label="false"
+                           ng-href="{{::pod.program.card.ctaUrl}}"
+                           ng-click="followLink($event, pod.program.card.ctaUrl)"
+                           translate>
+                            <span>{{::pod.program.card.ctaText}}</span>
+                            <i class="icon-forward" ng-if="::isExternalLink(pod.program.card.ctaUrl)" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="mobileFixedContents animationContents" ng-show="isAnimating">
+                    <div class="moveDown delay4">
+                        <span class="checkmarkCircle middle zoomIn delay1"><i aria-hidden="true" class="icon-checkmark"></i></span>
+                    </div>
+                </div>
+                <div class="fixedCornerTopRight">
+                    <button class="infoBtn"
+                            ng-click="flip($event)"
+                            track-event
+                            event-category="dashboard_goal_pod_show_info"
+                            event-label="{{::programEventLabel}}"
+                            scrub-label="false"
+                            aria-label="Program Info">
+                        <i aria-hidden="true" class="icon-info"></i>
+                    </button>
+                </div>
+                <img class="podImg" aria-hidden="true" ng-src="{{::pod.program.globalSettings.graphicUrl}}">
+            </div>
+        </div>
+    </div>
+    <div class="face back" ng-attr-aria-hidden="{{!flipped}}">
+        <div ng-if="!showRewardBack">
+            <div class="colorBackground" ng-style="::{'background-color': '#' + pod.program.card.backgroundColor}">
+                <div class="contents">
+                    <div class="bodyHeader">
+                        <img ng-src="{{::pod.program.card.logoUrl}}"/>
+                    </div>
+                    <div class="lineDividerHeader"></div>
+                    <div id="goalPodBackHeaderText-{{::uniqueId}}"
+                         class="bodyTitle">
+                        <div class="h24 light reducedLineHeight">{{::pod.program.title}}</div>
+                    </div>
+                    <p class="bodyDescription p14 light reducedLineHeight">{{::pod.program.card.subTitle| characters: 240}}</p>
+                </div>
+                <div class="colorBackground rightSide mobileHidden">
+                    <div class="infoContents">
+                        <div class="p15 medium basicLineHeight" translate>Success criteria:</div>
+                        <ol class="p12">
+                            <li>{{::pod.program.milestones[0].card.title}}</li>
+                            <li ng-if="::pod.program.milestones.length === 2">{{::pod.program.milestones[1].card.title}}</li>
+                            <li ng-if="::pod.program.milestones.length > 2" translate>Complete all of your activities</li>
+                        </ol>
+                        <div class="lineDivider"></div>
+                        <div class="infoCoins" ng-style="::{'background-color': '#' + pod.program.card.backgroundColor}">
+                            <span class="h26 light basicLineHeight middle">+{{::pod.program.globalSettings.potentialRewards}}</span>
+                            <span class="bonusCoins p10 medium middle" translate>TOTAL COINS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="fixedCornerTopRight">
+                <button class="infoBtn active"
+                        ng-click="flip($event); revertCardBack()"
+                        track-event
+                        event-category="dashboard_goal_pod_hide_info"
+                        event-label="{{::programEventLabel}}"
+                        scrub-label="false"
+                        aria-label="Program Info">
+                    <i aria-hidden="true" class="icon-info" ng-style="::{color: '#' + pod.program.card.backgroundColor}"></i>
+                    <i aria-hidden="true" class="icon-info darkIcon"></i>
+                </button>
+            </div>
+        </div>
+        <div class="rewardBack" ng-if="showRewardBack">
+            <div class="colorBackground" ng-style="::{'background-color': '#' + pod.program.card.backgroundColor}">
+                <div class="contents">
+                    <h3 id="goalPodBackHeaderText-{{::uniqueId}}" class="cardTitle h26 light" tabindex="-1">
+                        {{rewardTitle | translate}}
+                    </h3>
+                    <p class="rewardDescription p16 light">{{rewardDescription | translate}} </p>
+                    <p class="rewardDescription p16 bold"
+                       ng-show="milestoneRemaining"
+                       translate-plural="{{$count}} more to go. Keep it up!"
+                       translate-n="milestoneRemaining"
+                       translate>1 more to go. Keep it up!</p>
+                    <p class="fixedCorner p16" ng-show="rewardCoins" translate>+{{rewardCoins}} Rally Coins</p>
+                    <button class="closeBtn"
+                            ng-click="flip($event); revertCardBack()"
+                            tabindex="{{flipped ? 0 : -1}}"
+                            track-event
+                            event-category="{{::eventCategory}}"
+                            event-label="goal_pod_programs_rewards_close"
+                            aria-label="Close button">
+                        <i aria-hidden="true" class="icon-thinX"></i>
+                    </button>
+                    <div class="rewardIcon" ng-class="{completed: !milestoneRemaining}" aria-hidden="true">
+                        <img ng-src="{{rewardImgUrl}}" alt=""/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

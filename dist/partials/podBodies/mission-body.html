@@ -1,0 +1,318 @@
+<div class="mission card" ng-class="{flipped: flipped}" ng-controller="MissionPodCtrl">
+    <div class="face front" ng-attr-aria-hidden="{{flipped}}">
+        <div class="colorBackground" ng-style="{'background-color': '#' + cardData.mission.backgroundColor.normal}">
+            <div class="complete fullHeight" ng-if="isMissionComplete">
+                <h3 class="missionHeader p16 medium" translate-comment="e.g. Mission #3" translate>Mission #{{$index + 1}}</h3>
+                <p id="goalPodFrontHeaderText-{{missionId}}" class="bodyTitle h24 light">{{cardData.mission.name}}</p>
+                <img class="missionCompleteImg" aria-hidden="true" ng-src="/img/missions/detailsBottomAligned/{{cardData.mission.missionId}}.svg">
+                <div class="fixedCorner">
+                    <p class="p12 medium" translate>Total Coins Earned:</p>
+                    <p class="p16 reducedLineHeight" translate>{{cardData.mission.details.potentialCoinYield}} Coins</p>
+                </div>
+                <div class="fixedCornerBottomRight p16" translate>
+                    <p class="p16 reducedLineHeight" translate>Mission Complete</p>
+                </div>
+                <div class="fixedCornerTopRight">
+                    <button class="infoBtn"
+                            ng-click="flip($event)"
+                            track-event
+                            event-category="dashboard_goal_pod_show_info"
+                            event-label="{{missionId}}"
+                            scrub-label="false"
+                            aria-label="Mission Info">
+                        <i aria-hidden="true" class="icon-info"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="fullHeight" ng-if="!isMissionComplete">
+                <div class="contents">
+                    <div class="bodyHeader">
+                        <h3 class="p16 medium" translate-comment="e.g. Mission #3" translate>Mission #{{$index + 1}}</h3>
+                    </div>
+                    <div class="lineDividerHeader"></div>
+                    <p id="goalPodFrontHeaderText-{{missionId}}" class="bodyTitle h24 light">{{cardData.mission.name}}</p>
+                    <div class="mobileFixedContents fadeOutTransition" ng-show="!isAnimating">
+                        <span ng-if="cardData.mission.kind === 'integer'">
+                            <span ng-if="cardData.instance.stats.dataSource">
+                                <canvas class="progressCircle"
+                                    progress-circle
+                                    width="54"
+                                    height="54"
+                                    border-color="'#fff'"
+                                    line-width="2"
+                                    end-cap="'round'"
+                                    background-color="'rgba(0, 0, 0, 0.2)'"
+                                    instant-load="true"
+                                    progress-amount="cardData.instance.stats.currentDay.amount !== null ? cardData.instance.stats.currentDay.amount : 0"
+                                    total-amount="{{cardData.mission.successCriteria.daily}}"
+                                    date="checkInDate"
+                                    role="progressbar"
+                                    aria-valuenow="{{cardData.instance.stats.currentDay.amount !== null ? cardData.instance.stats.currentDay.amount : 0}}"
+                                    aria-valuemin="0"
+                                    aria-valuemax="{{cardData.mission.successCriteria.daily}}">
+                                </canvas>
+                            </span>
+                            <span class="weekField todayText">
+                                <div class="tinyText capitalize" translate-comment="e.g. today's steps" translate>Today's {{cardData.mission.details.criteriaUnitToDisplay}}</div>
+                                <span class="h28 light odometerText" ng-show="!cardData.instance.stats.currentDay.amount">0</span>
+                                <span class="h28 light odometerText" ng-show="cardData.instance.stats.currentDay.amount" odometer="cardData.instance.stats.currentDay.amount" min-integer-len="1">
+                                    {{cardData.instance.stats.currentDay.amount}}
+                                </span>
+                            </span>
+                        </span>
+                        <span class="weekField" aria-hidden="true">
+                            <div class="tinyText" translate>This Week</div>
+                            <span class="dayCircle"
+                                    ng-repeat="day in [1,2,3,4,5,6,7].slice(0, cardData.mission.successCriteria.weekly)"
+                                    ng-class="{active: day <= cardData.instance.stats.currentInterval.completedDays + 1,
+                                                'activeCircleFadeIn delay1': day === cardData.instance.stats.currentInterval.completedDays + 1}">
+                                <span class="whiteCircle"
+                                        ng-class="{zoomFadeIn: day === cardData.instance.stats.currentInterval.completedDays}"
+                                        ng-show="day <= cardData.instance.stats.currentInterval.completedDays">
+                                    <i class="icon-checkmark"
+                                        ng-show="day <= cardData.instance.stats.currentInterval.completedDays"
+                                        ng-style="{color: '#'+cardData.mission.backgroundColor.normal}"></i>
+                                </span>
+                                <span class="lineConnector"
+                                        ng-show="day !== cardData.instance.stats.currentInterval.completedDays"
+                                        ng-class="{active: day <= cardData.instance.stats.currentInterval.completedDays - 1}"></span>
+                                    <span class="lineConnectorDotted" ng-show="day === cardData.instance.stats.currentInterval.completedDays">
+                                        <span ng-class="{'moveRight delay0': day === cardData.instance.stats.currentInterval.completedDays}">
+                                            <span class="lineConnectorDot"></span>
+                                            <span class="lineConnectorDot"></span>
+                                        </span>
+                                    </span>
+                            </span>
+                        </span>
+                    </div>
+                    <div class="mobileFixedContents animationContents" ng-show="isAnimating">
+                        <div class="moveDown delay4">
+                            <span class="checkmarkCircle middle zoomIn delay1"><i aria-hidden="true" class="icon-checkmark"></i></span>
+                            <div class="inline-block bounceFadeIn delay2">
+                                <div class="animationText">
+                                    <div class="p18 reducedLineHeight medium" translate>You did it!</div>
+                                    <div class="p14 reducedLineHeight light" translate>Keep up the good work.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fixedCorner" ng-show="isAnimating">
+                        <div class="moveDown delay4">
+                            <p class="p16 fadeIn delay3 durationVeryFast" translate>+{{rewardCoins}} Rally Coins</p>
+                        </div>
+                    </div>
+                    <div class="fixedCorner fadeOutTransition" ng-if="cardData.mission.kind === 'integer'" ng-show="!isAnimating">
+                        <span ng-if="!isSyncing && !checkinAmount">
+                            <span ng-if="cardData.instance.stats.dataSource">
+                                <button class="ctaBtn p12 bold"
+                                    tabindex="{{!flipped ? 0 : -1}}"
+                                    ng-disabled="isAnimating"
+                                    ng-click="syncDevice(cardData.instance.instanceId)"
+                                    track-event
+                                    event-category="dashboard_goal_pod_missions_device_sync"
+                                    event-label="{{missionId}}"
+                                    scrub-label="false"
+                                    translate>Sync</button>
+                                <span class="lastSyncText p10 medium" ng-show="cardData.instance.stats.lastCheckinDate" translate>
+                                    Last mobile device sync: <br>
+                                    {{cardData.instance.stats.lastDataUpdate | date2:'LT' | lowercase}} |
+                                    {{replaceDashes(cardData.instance.stats.lastDataUpdate | date2:'L')}}
+                                </span>
+                            </span>
+                            <span ng-if="!cardData.instance.stats.dataSource">
+                                <form name="form" zen-submit="checkInManual(cardData.instance.instanceId, formValues.integerCheckinValue)" novalidate>
+                                    <input class="p13 capitalize"
+                                        name="integerCheckIn"
+                                        type="number"
+                                        tabindex="{{!flipped ? 0 : -1}}"
+                                        required
+                                        ng-required="true"
+                                        ng-pattern="/\d+/"
+                                        ng-model="formValues.integerCheckinValue"
+                                        ng-trim="true"
+                                        step="{{cardData.mission.details.dailyMin}}"
+                                        min="{{cardData.mission.details.dailyMin}}"
+                                        max="{{cardData.mission.details.dailyMax}}"
+                                        placeholder="# of {{cardData.mission.details.criteriaUnitToDisplay}}"
+                                        role="textbox"
+                                        aria-label="How many {{cardData.mission.details.unit}} did you do today?"
+                                        maxlength="{{cardData.mission.details.dailyMax.toString().length}}"></input>
+                                    <span class="errorPopup" ng-show="form.integerCheckIn.$viewValue && form.integerCheckIn.$invalid">
+                                        <span class="hidden508" translate>
+                                            Error: Enter a number between {{cardData.mission.details.dailyMin}} and {{cardData.mission.details.dailyMax}}
+                                        </span>
+                                        <span aria-hidden="true" translate>
+                                            Enter a number between {{cardData.mission.details.dailyMin}}-{{cardData.mission.details.dailyMax}}.
+                                        </span>
+                                    </span>
+                                    <button class="ctaBtn p12 bold"
+                                        type="submit"
+                                        tabindex="{{!flipped ? 0 : -1}}"
+                                        ng-disabled="isAnimating"
+                                        track-event
+                                        event-category="dashboard_goal_pod_missions_integer_check_in"
+                                        event-label="{{missionId}}"
+                                        scrub-label="false"
+                                        translate>Check In</button>
+                                </form>
+                            </span>
+                        </span>
+                        <span id="goalPodSyncText-{{missionId}}" tabindex="-1" aria-label="Syncing" class="statusText p13 bold" ng-if="isSyncing && !errorStatus" translate>
+                            <div ng-if="!mission.data.instance.stats.dataSource" translate>
+                                Checking In...
+                            </div>
+                            <div ng-if="mission.data.instance.stats.dataSource" translate>
+                                Syncing...
+                            </div>
+                        </span>
+                        <div id="goalPodSyncCompleteText-{{missionId}}" class="statusText p16 light" tabindex="-1" ng-if="!isSyncing && checkinAmount">
+                            <div class="hidden508" ng-if="!mission.data.instance.stats.dataSource" translate>
+                                Check-in Complete {{checkinAmount}} {{mission.data.mission.details.unit}} total
+                            </div>
+                            <div class="hidden508" ng-if="mission.data.instance.stats.dataSource" translate>
+                                Sync Complete {{checkinAmount}} {{mission.data.mission.details.unit}} total
+                            </div>
+                            <div ng-if="!mission.data.instance.stats.dataSource" translate>
+                                Check in Complete
+                            </div>
+                            <div  ng-if="mission.data.instance.stats.dataSource" translate>
+                                Sync Complete
+                            </div>
+                        </div>
+                        <span id="goalPodSyncCompleteText-{{missionId}}" tabindex="-1" class="statusText" ng-if="isSyncing && errorStatus">
+                            <span class=" p18 light">{{errorStatus | translate}}</span>
+                            <button class="whyBtn p11 medium"
+                                ng-if="cardData.instance.stats.dataSource"
+                                ng-click="openSyncModal()"
+                                tabindex="{{!flipped ? 0 : -1}}"
+                                track-event
+                                event-category="{{eventCategory}}"
+                                event-label="goal_pod_missions_no_sync_why"
+                                translate>Why?</button>
+                        </span>
+                    </div>
+                    <div class="fixedCorner" ng-if="cardData.mission.kind === 'boolean'" ng-show="!isAnimating && isDayComplete()">
+                        <div class="completeContents hardFadeIn">
+                            <span class="checkmarkCircle zoomIn delay2"><i aria-hidden="true" class="icon-checkmark"></i></span>
+                            <span class="moveUp delay3">
+                                <span id="goalPodSyncCompleteText-{{missionId}}" tabindex="-1" class="completeText p18 light" translate>Today Completed</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="fixedCorner fadeOutTransition" ng-if="cardData.mission.kind === 'boolean'" ng-show="!isAnimating && !isDayComplete()">
+                        <button class="ctaBtn p12 bold"
+                            ng-if="!isSyncing && !checkinAmount"
+                            ng-disabled="isAnimating || isDayComplete()"
+                            ng-click="checkInManual(cardData.instance.instanceId, 1)"
+                            tabindex="{{!flipped ? 0 : -1}}"
+                            track-event
+                            event-category="dashboard_goal_pod_missions_boolean_check_in"
+                            event-label="{{missionId}}"
+                            scrub-label="false"
+                            translate>Check In</button>
+                        <span id="goalPodSyncText-{{missionId}}" tabindex="-1" aria-label="Syncing" class="statusText p13 bold" ng-if="isSyncing && !errorStatus" translate>Checking In...</span>
+                        <span id="goalPodSyncCompleteText-{{missionId}}" tabindex="-1" class="statusText p18 light" ng-if="isSyncing && errorStatus">
+                            {{errorStatus | translate}}
+                        </span>
+                        <div id="goalPodSyncCompleteText-{{missionId}}" class="statusText p16 light" tabindex="-1" ng-if="!isSyncing && checkinAmount" translate>
+                            Check in Complete
+                        </div>
+                    </div>
+                </div>
+                <div class="fixedCornerTopRight">
+                    <button class="infoBtn"
+                            ng-click="flip($event)"
+                            track-event
+                            event-category="dashboard_goal_pod_show_info"
+                            event-label="{{missionId}}"
+                            scrub-label="false"
+                            aria-label="Mission Info">
+                        <i aria-hidden="true" class="icon-info"></i>
+                    </button>
+                </div>
+                <img class="podImg" aria-hidden="true" ng-src="/img/missions/detailsBottomAligned/{{cardData.mission.missionId}}.svg">
+            </div>
+        </div>
+    </div>
+    <div class="face back" ng-attr-aria-hidden="{{!flipped}}">
+        <div ng-if="!showRewardBack">
+            <div class="colorBackground" ng-style="{'background-color': '#' + cardData.mission.backgroundColor.normal}">
+                <div class="contents">
+                    <div class="bodyHeader">
+                        <h3 class="p16 bold" translate-comment="e.g. Mission #3" translate>Mission #{{$index + 1}}</h3>
+                    </div>
+                    <div class="lineDividerHeader"></div>
+                    <p id="goalPodBackHeaderText-{{missionId}}"
+                        class="bodyTitle h24 light mobileOnly">{{cardData.mission.name}}</p>
+                    <p class="bodyDescription p14 reducedLineHeight">{{cardData.mission.description | characters: 240}}</p>
+                </div>
+                <div class="colorBackground rightSide mobileHidden" ng-style="{'background-color': '#' + cardData.mission.backgroundColor.dark}">
+                    <div class="infoContents">
+                        <div class="p15 medium basicLineHeight" translate>Success criteria:</div>
+                        <div class="infoCounterContainer">
+                            <div class="infoCounter">
+                                <div class="h36 basicLineHeight">
+                                    1x
+                                </div>
+                                <div class="p9 medium" translate>PER DAY</div>
+                            </div>
+                            <span class="verticalLineDivider" ng-style="{'background-color': '#' + cardData.mission.backgroundColor.normal}"></span>
+                            <div class="infoCounter">
+                                <div class="h36 basicLineHeight">{{cardData.mission.successCriteria.weekly}}x</div>
+                                <div class="p9 medium" translate>PER WEEK</div>
+                            </div>
+                        </div>
+                        <div class="downArrowContainer">
+                            <div class="downArrow" ng-style="{'border-color': '#' + cardData.mission.backgroundColor.normal}"></div>
+                        </div>
+                        <div class="infoDescription p13 medium" translate-n="cardData.mission.successCriteria.numWeeks" translate-plural="Complete {{$count}} Successful Weeks" translate>
+                            Complete 1 Successful Week
+                        </div>
+                        <div class="infoCoins">
+                            <div class="h30 light basicLineHeight">+{{cardData.mission.details.potentialCoinYield}}</div>
+                            <div class="p13 medium" translate>Total Coins</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="fixedCornerTopRight">
+                <button class="infoBtn active" 
+                        ng-click="flip($event); revertCardBack()"
+                        track-event
+                        event-category="dashboard_goal_pod_hide_info"
+                        event-label="{{missionId}}"
+                        scrub-label="false"
+                        aria-label="Mission Info">
+                    <i aria-hidden="true" class="icon-info" ng-style="{color: '#' + cardData.mission.backgroundColor.dark}"></i>
+                </button>
+            </div>
+        </div>
+        <div class="rewardBack" ng-if="showRewardBack">
+            <div class="colorBackground" ng-style="{'background-color': '#' + cardData.mission.backgroundColor.normal}">
+                <div class="contents">
+                <h3 id="goalPodBackHeaderText-{{missionId}}" class="cardTitle h26 medium" tabindex="-1">
+                    {{rewardTitle | translate}}
+                </h3>
+                <p class="rewardDescription p16 light">{{rewardDescription | translate}} </p>
+                <p class="rewardDescription p16 bold"
+                    ng-show="weeksRemaining"
+                    translate-plural="{{$count}} more weeks to go. Keep it up!"
+                    translate-n="weeksRemaining"
+                    translate>1 more week to go. Keep it up!</p>
+                <p class="fixedCorner p16" translate>+{{rewardCoins}} Rally Coins</p>
+                <button class="closeBtn" 
+                        ng-click="flip($event); revertCardBack()" 
+                        tabindex="{{flipped ? 0 : -1}}"
+                        track-event
+                        event-category="{{eventCategory}}"
+                        event-label="goal_pod_missions_rewards_close"
+                        aria-label="Close button">
+                    <i aria-hidden="true" class="icon-thinX"></i>
+                </button>
+                <div class="rewardIcon" ng-class="{completed: !weeksRemaining}" aria-hidden="true">
+                    <img ng-src="{{rewardImgUrl}}" alt=""/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

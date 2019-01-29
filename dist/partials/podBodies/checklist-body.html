@@ -1,0 +1,39 @@
+<div>
+    <div class="colorBackground" ng-style="{'background-color': '#' + pod.colorCode}"></div>
+    <div class="contents">
+        <div class="bodyHeader">
+            <h3 class="p16 medium" translate>Next Up!</h3>
+        </div>
+        <div class="lineDividerHeader"></div>
+        <p class="bodyTitle h24 light">{{pod.title || cardData.title}}</p>
+        <p class="bodyDescription p14 reducedLineHeight">{{pod.description}}</p>
+    </div>
+    <div>
+        <div class="fixedCorner">
+            <button class="ctaBtn p12 bold"
+                track-event
+                event-category="{{eventCategory}}"
+                event-label="goal_pod_checklist_check_in"
+                translate>Check In</button>
+            <canvas class="progressCircle checklist"
+                progress-circle
+                width="35"
+                height="35"
+                border-color="'#fff'"
+                line-width="4"
+                end-cap="'round'"
+                background-color="'rgba(0, 0, 0, 0.2)'"
+                instant-load="true"
+                progress-amount="0"
+                total-amount="100"
+                date="checkInDate"
+                role="progressbar"
+                aria-valuenow="0"
+                aria-valuemin="0"
+                aria-valuemax="100">
+            </canvas>
+            <span class="p13 bold" translate>I Did it!</span>
+        </div>
+    </div>
+    <img class="podImg" aria-hidden="true" ng-if="pod.imgUrl || cardData.imgUrl" ng-src="{{pod.imgUrl || cardData.imgUrl}}">
+</div>

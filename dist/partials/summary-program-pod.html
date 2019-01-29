@@ -1,0 +1,50 @@
+<div class="summary-program-pod">
+    <div class="colorBackground" ng-style="::{'background-color': '#' + program.card.backgroundColor}"></div>
+    <div class="imgContainer cardImage">
+        <img alt="" ng-src="{{::program.globalSettings.graphicUrl}}"/>
+    </div>
+    <div class="imgContainer cardLogo">
+        <img alt="" ng-src="{{::program.card.logoUrl}}"/>
+    </div>
+    <div class="cardTitle h22 light">{{::program.card.title}}</div>
+    <div class="lineDivider"></div>
+    <div class="description p12 light">{{::program.card.subTitle}}</div>
+    <ul class="features">
+        <li ng-show="program.nextRewardDescription">
+            <div class="contents">
+                <i aria-hidden="true" class="icon-incentive"></i>
+                <div class="textContainer">
+                    <div class="p12 medium" translate>Reward</div>
+                    <div class="p12 capitalize" id="nextRewardDescription">{{::program.nextRewardDescription}}</div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="contents">
+                <i aria-hidden="true" class="icon-calendar"></i>
+                <div class="textContainer">
+                    <div class="p12 medium" translate-comment="e.g. avg length of time" translate>Average Length</div>
+                    <div class="p12" translate translate-plural="{{$count}} Weeks" translate-n="program.globalSettings.programLength">1 Week</div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="contents">
+                <i aria-hidden="true" class="icon-dashboard"></i>
+                <div class="textContainer">
+                    <div class="p12 medium" translate>Commitment</div>
+                    <div class="p12 capitalize">{{::program.globalSettings.commitment}}</div>
+                </div>
+            </div>
+        </li>
+        <li ng-show="program.globalSettings.potentialRewards">
+            <div class="contents">
+                <i aria-hidden="true" class="icon-rewards"></i>
+                <div class="textContainer">
+                    <div class="p12 medium" translate>Potential Coins</div>
+                    <div class="p12" translate-n="program.globalSettings.potentialRewards" translate-plural="{{$count}} Coins" translate>1 Coin</div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

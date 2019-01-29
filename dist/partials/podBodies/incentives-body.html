@@ -1,0 +1,24 @@
+<div class="incentives">
+    <div class="colorBackground" ng-style="{'background-color': '#' + (pod.colorCode || cardData.colorCode)}">
+        <div class="contents">
+            <div class="bodyHeader"></div>
+            <div class="lineDividerHeader"></div>
+            <h3 class="bodyTitle h24 light">{{pod.programOverview.programTitle}}</h3>
+            <div>
+                <p class="incentivesDescription mobileFixedContents p16 light reducedLineHeight">
+                    <span translate-n="pod.programOverview.completedActivities.length"
+                        translate-plural="<strong>{{$count}}</strong> activities completed"
+                        translate><strong>1</strong> activity completed
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <a class="fixedCorner ctaBtn p13 bold"
+        ng-href="{{pod.ctaUrl}}"
+        track-event
+        event-category="{{eventCategory}}"
+        event-label="goal_pod_incentives_view_details"
+        translate>View Details</a>
+    <img class="podImg" aria-hidden="true" ng-src="{{bowerPath}}/progress-pod-ui/dist/img/Clipboard_icon.svg">
+</div>

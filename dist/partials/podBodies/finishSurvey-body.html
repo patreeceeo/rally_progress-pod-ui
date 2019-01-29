@@ -1,0 +1,13 @@
+<div class="finishSurvey">
+    <div class="colorBackground">
+        <img aria-hidden="true" ng-src="{{pod.imgUrl}}"/>
+        <p class="description h24 light">
+            {{pod.description | translate}}
+        </p>
+        <a class="ctaBtn p13 bold"
+            track-event
+            event-category="{{eventCategory}}"
+            event-label="goal_pod_finish_survey"
+            ng-href="{{pod.ctaUrl}}">{{pod.ctaText  | translate}}</a>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+<div class="goalCompletion">
+    <div class="colorBackground">
+        <p class="description h26 light" translate>
+            Ready for a New Challenge?
+        </p>
+        <div>
+            <a track-event
+                    event-category="{{eventCategory}}"
+                    event-label="goal_pod_goal_completion_signup"
+                    ui-sref="rallyAge.readinessv2.pre">
+                <img aria-hidden="true" ng-src="{{bowerPath}}/progress-pod-ui/dist/img/Pick_New_Goal_icon.svg"/>
+            </a>
+        </div>
+        <a class="ctaBtn p16 bold"
+            track-event
+            event-category="{{eventCategory}}"
+            event-label="goal_pod_goal_completion_signup"
+            ui-sref="rallyAge.readinessv2.pre"
+            translate>Choose a New Goal</a>
+        <p class="additionalText p13" ng-show="pod.additionalText">
+            {{pod.additionalText | translate }}
+        </p>
+    </div>
+</div>

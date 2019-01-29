@@ -1,0 +1,63 @@
+<div class="selection-pod {{card.status + 'AcuityState'}}" ng-class="{active: card[selectedProperty]}">
+    <div class="imgContainer" aria-hidden="true" ng-if="cardType !== 'missions'" ng-style="{'background-color': card[selectedProperty] ? (topicColor(card.topic) || '#' + card.backgroundColor): ''}">
+        <div class="checkmark"><i class="icon icon-checkmark" aria-hidden="true"></i></div>
+        <div ng-if="card.bestMatch" class="bestMatch" translate><i class="icon icon-star" aria-hidden="true"></i> Best Match</div>
+        <img ng-src="{{ card.imageUrl }}" alt=""/>
+    </div>
+    <div class="imgContainer" aria-hidden="true" ng-if="cardType === 'missions'" ng-style="{'background-color': '#'+card.activityObject.mission.mission.backgroundColor.normal}">
+        <div class="checkmark"><i class="icon icon-checkmark" aria-hidden="true"></i></div>
+        <div ng-if="card.index < 3" class="bestMatch mission" translate><i class="icon icon-star" aria-hidden="true"></i> Best Match</div>
+        <img ng-if="cardType === 'missions'" class="missionImg" ng-src="/img/missions/detailsBottomAligned/{{card.activityObject.mission.mission.missionId}}.svg" alt=""/>
+    </div>
+    <div class="bottom p12" ng-if="cardType == 'goals'">
+        <h3 class="p16 bold title healthBorder">{{ card.category | translate }}</h3>
+        <h4 class="h22 light">
+            {{ card.title | translate }}
+        </h4>
+        <p class="goalBody p12" data-ng-bind="card.description | translate" data-ellipsis></p>
+    </div>
+    <div class="bottom mission p12" ng-if="cardType === 'missions'">
+        <h3 class="p16 bold title longer healthBorder" translate>Mission</h3>
+        <h4 class="h22 light tallHeader">
+            {{ card.activityObject.mission.mission.name  | translate }}
+        </h4>
+        <div class="desc">
+            {{ card.activityObject.mission.mission.description | translate }}
+        </div>
+        <div class="inProgress p12 italic" ng-if="card.activityObject.mission.instance" translate>In progress</div>
+    </div>
+    <div class="bottom program p12" ng-if="cardType === 'programs'">
+        <h3 class="p16 bold title longer healthBorder"><img ng-if="card.providerLogo" ng-src="{{card.providerLogo}}" aria-hidden="true"></h3>
+        <h4 class="h22 light">
+            {{ card.title | translate }}
+        </h4>
+        <div class="desc">
+            {{ card.description | translate }}
+        </div>
+        <div class="stat"
+             ng-if="card.length">
+            <i class="icon icon-calendar" aria-hidden="true"></i>
+            <div class="bold" translate>Program Length</div>
+            <span translate translate-plural="{{$count}} Weeks" translate-n="card.length">1 Week</span>
+        </div>
+        <div class="stat"
+             ng-if="card.commitment">
+            <i class="icon icon-dashboard" aria-hidden="true"></i>
+            <div class="bold" translate>Commitment</div>
+            <span class="capitalize">{{ card.commitment | translate }}</span>
+        </div>
+        <div class="stat"
+             ng-if="card.rewards">
+            <i class="icon icon-rewards" aria-hidden="true"></i>
+            <div class="bold" translate>Potential Coins</div>
+            <span translate translate-plural="{{$count}} Coins" translate-n="card.rewards">1 Coin</span>
+        </div>
+        <div class="stat"
+             ng-if="card.nextRewardDescription">
+            <i class="icon icon-incentive" aria-hidden="true"></i>
+            <div class="bold" translate>Reward</div>
+            <span class="capitalize tableDisplay" id="nextRewardDescription">{{ card.nextRewardDescription | translate }}</span>
+        </div>
+        <div ng-if="card.extraInfo" class="extraInfo" translate><i class="icon icon-info" aria-hidden="true"></i><span class="hidden508">More information</span></div>
+    </div>
+</div>

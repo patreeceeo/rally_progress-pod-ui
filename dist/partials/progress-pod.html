@@ -1,0 +1,167 @@
+<div class="progress-pod-ui" ng-class="{invisible: !podState.isInitialized}">
+    <div class="podHeader">
+        <h2 class="podTitle p18">
+            {{pod.progressBar.title | translate}}
+        </h2>
+        <i class="podSubtitle p12">{{getSubtitleText() | translate}}</i>
+        <span class="podRewardProgressText p16" ng-if="pod.programOverview && getProgressBarPercentage() !== null" aria-hidden="true">
+            <span class="medium">{{pod.programOverview.rewardLabel}}:</span>
+            <span class="medium green">{{pod.programOverview.rewardValueNow}}</span>
+            <span class="light">
+                <span translate translate-comment="e.g. 1 of 2">of</span>
+                {{pod.programOverview.rewardValueMax}}
+            </span>
+        </span>
+        <div class="podProgress"
+            ng-if="!pod.progressBar.extraBars && podState.isInitialized"
+            ng-class="{invisible: getProgressBarPercentage() === null}">
+            <div class="progressContainer padded"
+                role="progressbar"
+                aria-valuenow="{{getProgressBarPercentage() * 100}}"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuetext="{{completionPercentText}}">
+                <div class="progressBar" ng-style="{width: getProgressBarPercentage() * 100 + '%'}"></div>
+            </div>
+            <div class="progressMountain"
+                    ng-class="{complete: showCompleteProgressCircle}"
+                    role="tooltip"
+                    aria-label="Completion Reward: {{getCompletionCoins()}} Coins">
+                <div class="progressBarCoins p16 bold"
+                        ng-show="getCompletionCoins()"
+                        aria-hidden="true">
+                    +{{getCompletionCoins()}}
+                </div>
+                <div class="progressCircle">
+                    <img ng-show="!showCompleteProgressCircle" ng-src="{{bowerPath}}/progress-pod-ui/dist/img/Goal_icon_grey.svg" alt=""/>
+                    <img ng-show="showCompleteProgressCircle" ng-src="{{bowerPath}}/progress-pod-ui/dist/img/Goal_icon_white.svg" alt=""/>
+                </div>
+                <img class="progressStars"
+                    src="{{bowerPath}}/progress-pod-ui/dist/img/Progress_bar_stars.svg"
+                    alt="">
+            </div>
+        </div>
+        <div class="podProgress"
+            ng-if="pod.progressBar.extraBars && podState.isInitialized"
+            ng-class="{invisible: getProgressBarPercentage() === null}"
+            aria-valuenow="{{getProgressBarPercentage() * 100}}"
+            aria-valuemin="0"
+            aria-valuemax="{{pod.progressBar.extraBars <= 1 ? 150 : 300}}"
+            aria-valuetext="{{completionPercentText}}">
+            <div class="progressContainer" ng-class="{oneThirdWidth: pod.progressBar.extraBars > 1, twoThirdWidth: pod.progressBar.extraBars <= 1}">
+                <div class="progressBar" ng-style="{width: getProgressBarPercentage() * 100 + '%'}"></div>
+            </div>
+            <div class="progressContainer padded multiBar oneThirdWidth" ng-class="{hovered: i.hovered}" ng-repeat="i in multiBars">
+                <div class="progressBar"></div>
+                <a class="progressCircle"
+                        ng-mouseover="i.hovered = true"
+                        ng-mouseleave="i.hovered = false"
+                        ui-sref="rallyAge.readinessv2.select"
+                        title="Add a Mission"
+                        track-event
+                        event-category="{{eventCategory}}"
+                        event-label="goal_pod_add_mission"
+                        aria-label="Add a Mission">
+                    <span class="plusIcon" aria-hidden="true">+</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <button class="hidden508 508ProgressPodPrevBtn"
+        ng-show="getCardArray(pod).length > 1"
+        ng-click="scrollPrev508($index)"
+        ng-disabled="scrollableCurrentPage <= 0"
+        aria-disabled="scrollableCurrentPage <= 0"
+        track-event
+        event-category="{{eventCategory}}"
+        event-label="goal_pod_view_prev_508"
+        tabindex="-1"
+        translate>View previous
+    </button>
+    <div class="scrollableViewport 508ProgressPodScrollable"
+            robo-scrollable
+            max-items="1"
+            size="1"
+            speed="300"
+            touch="true">
+        <div class="scrollable">
+            <div class="podBody"
+                 ng-repeat="cardData in getCardArray(pod)"
+                 aria-hidden="{{scrollableCurrentPage !== $index}}">
+                     <div ng-include="TEMPLATEURLS.bowerPath + '/progress-pod-ui/dist/partials/podBodies/' + pod.type + '-body.html'"></div>
+            </div>
+        </div>
+    </div>
+    <button class="hidden508 508ProgressPodNextBtn"
+        ng-show="getCardArray(pod).length > 1"
+        ng-click="scrollNext508($index)"
+        ng-disabled="scrollableCurrentPage >= scrollableTotalPages - 1"
+        aria-disabled="scrollableCurrentPage >= scrollableTotalPages - 1"
+        tabindex="-1"
+        track-event
+        event-category="{{eventCategory}}"
+        event-label="goal_pod_view_next_508"
+        translate>View next
+    </button>
+
+    <div class="lineDividerThick"></div>
+    <div class="podLinks">
+        <span class="changeGoal p12 reducedLineHeight" ng-if="pod.type === ProgressPodTypes.Mission || pod.type === ProgressPodTypes.Program">
+            <i class="icon-pencil" aria-hidden="true"></i>
+            <button
+                ng-click="changeGoal()"
+                robo-confirm="{{changeGoalText.description}}"
+                confirm-title="{{changeGoalText.title}}"
+                confirm-ok="{{changeGoalText.confirm}}"
+                confirm-cancel="{{changeGoalText.cancel}}"
+                track-event
+                event-category="dashboard_goal_pod_change_goal"
+                event-label="{{pod.program ? programEventLabel : missionPackEventLabel}}"
+                scrub-label="false"
+                translate-comment="e.g. change your health goal"
+                translate>Change Goal</button>
+            <span class="lineSpacer">|</span>
+            <button
+                ng-click="quitGoal()"
+                robo-confirm="{{quitGoalText.description}}"
+                confirm-title="{{quitGoalText.title}}"
+                confirm-ok="{{quitGoalText.confirm}}"
+                confirm-cancel="{{quitGoalText.cancel}}"
+                track-event
+                event-category="dashboard_goal_pod_quit_goal"
+                event-label="{{pod.program ? programEventLabel : missionPackEventLabel}}"
+                scrub-label="false"
+                translate-comment="e.g. quit your health goal"
+                translate>Quit Goal</button>
+        </span>
+        <a class="p15 medium"
+           ui-sref="authenticated.goals.details"
+           ng-if="pod.type === ProgressPodTypes.Mission || pod.type === ProgressPodTypes.Program"
+           ng-show="pod.type === ProgressPodTypes.Program || scrollableTotalPages < 1"
+           track-event
+           event-category="dashboard_goal_pod_view_details"
+           event-label="{{pod.program ? programEventLabel : missionPackEventLabel}}"
+           scrub-label="false"
+           translate>View Details</a>
+        <div class="navBtns" aria-hidden="true" ng-show="scrollableTotalPages > 1">
+            <span class="mobileHidden p15 medium" translate-comment="e.g. 1 of 3" translate>{{scrollableCurrentPage + 1}} of {{scrollableTotalPages}}</span>
+            <span class="mobileHidden lineSpacer p15">|</span>
+            <a class="p15 medium" ui-sref="authenticated.goals.details" ng-if="pod.type === ProgressPodTypes.Mission" translate>View Details</a>
+            <button class="prev"
+                    track-event
+                    event-category="dashboard_goal_pod_view_details"
+                    event-label="{{missionPackEventLabel}}"
+                    scrub-label="false"
+                    ng-class="{inactive: scrollableCurrentPage <= 0}">
+                <i aria-hidden="true" class="icon-arrowLeftLine"></i>
+            </button>
+            <button class="next"
+                    ng-class="{inactive: scrollableCurrentPage >= scrollableTotalPages - 1}"
+                    track-event
+                    event-category="{{eventCategory}}"
+                    event-label="goal_pod_view_next">
+                <i aria-hidden="true" class="icon-arrowRightLine"></i>
+             </button>
+        </div>
+    </div>
+</div>

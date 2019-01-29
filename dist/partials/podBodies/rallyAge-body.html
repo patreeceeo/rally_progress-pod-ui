@@ -1,0 +1,72 @@
+<div class="rallyAge">
+    <div class="colorBackground">
+        <div class="contents">
+            <div class="bodyHeader">
+                <h3 class="p16 medium" translate-comment="e.g. brain age, Rally is name of company" translate>Health Profile</h3>
+            </div>
+            <div class="lineDividerHeader grey"></div>
+            <div class="bodyTitle h24 light">
+                <div ng-if="pod.rallyAge.age" translate>
+                    Your Rally Age
+                </div>
+                <div ng-if="!pod.rallyAge.age" translate>
+                    Check Back Soon
+                </div>
+            </div>
+            <div class="bodyDescription">
+                <div ng-if="pod.rallyAge.age > pod.rallyAge.surveyAge">
+                    <span translate-n="pod.rallyAge.age - pod.rallyAge.surveyAge"
+                            translate-plural="Looks like your Rally Age is {{$count}} years <strong class='inline-block'>above your actual age</strong>."
+                            translate>Looks like your Rally Age is 1 year <strong class='inline-block'>above your actual age.</strong></span>
+                    <span translate>We can help with that!</span>
+                </div>
+                <div ng-if="pod.rallyAge.age === pod.rallyAge.surveyAge && pod.rallyAge.age > 0" translate>
+                    Looks like your Rally Age is the <strong>same age as your actual age</strong>. Nice work!
+                </div>
+                <div ng-if="pod.rallyAge.age < pod.rallyAge.surveyAge">
+                    <span translate-n="pod.rallyAge.surveyAge - pod.rallyAge.age"
+                            translate-plural="Looks like your Rally Age is {{$count}} years <strong class='inline-block'>below your actual age</strong>. Nice work!"
+                            translate>Looks like your Rally Age is 1 year <strong class='inline-block'>below your actual age</strong>. Nice work!</span>
+                </div>
+                <div ng-if="!pod.rallyAge.age" translate>
+                    We need a little more time to finish calculating your Rally Age, please check back later.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fixedCorner">
+        <div class="responsiveDescription p16 medium">
+            <div ng-if="pod.rallyAge.age > pod.rallyAge.surveyAge" translate>
+                Above your actual age.
+            </div>
+            <div ng-if="pod.rallyAge.age === pod.rallyAge.surveyAge && pod.rallyAge.age > 0" translate>
+                Same as your actual age.
+            </div>
+            <div ng-if="pod.rallyAge.age < pod.rallyAge.surveyAge" translate>
+                Below your actual age.
+            </div>
+            <div ng-if="!pod.rallyAge.age" translate>
+                Please check back later.
+            </div>
+        </div>
+        <a class="ctaBtn p13 bold" 
+            ng-if="pod.rallyAge.age"
+            ui-sref="authenticated.profile.healthProfileV2"
+            track-event
+            event-category="{{eventCategory}}"
+            event-label="goal_pod_rally_age_view_profile"
+            translate>See Profile</a>
+    </div>
+    <div class="rallyAgeCircleContainer" ng-if="pod.rallyAge.age" aria-hidden="true">
+        <div class="rallyAgeCircle">
+            <div health-age-odometer
+                 health-age="pod.rallyAge.age"
+                 real-age="pod.rallyAge.surveyAge"
+                 reveal-health-age="true"
+                 odometer-size="168"
+                 line-width="4"></div>
+        </div>
+        <div class="rallyAgeShadow"></div>
+    </div>
+    <img class="podImg" ng-if="!pod.rallyAge.age" aria-hidden="true" ng-src="{{bowerPath}}/progress-pod-ui/dist/img/No_Info_icon.svg"/>
+</div>
