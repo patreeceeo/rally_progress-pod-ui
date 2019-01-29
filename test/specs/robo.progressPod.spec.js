@@ -74,10 +74,6 @@ describe('ProgressPodCtrl', function(){
         generateMission(0, 10),
         generateMission(10, 10)
       ],
-      program: {
-        syllabusId: "foo",
-        nextRewardDescription: "bar"
-      }
     };
     $scope.getScrollable = jasmine.createSpy('getScrollable');
     $scope.getScrollable.and.returnValue($q.resolve(Fixtures.$scrollable));
@@ -261,11 +257,23 @@ describe('ProgressPodCtrl', function(){
     $timeout.verifyNoPendingTasks();
   });
 
-  it('should provide the programEventLabel', function() {
-    expect($scope.programEventLabel).toBe(angular.toJson({
+  it('should provide the an event label based on the program data, if available', function() {
+    $scope.pod.program = {
+      syllabusId: 'foo',
+      nextRewardDescription: 'bar'
+    };
+
+    // dubbed "getProgramEventLabel" for lack of a better name...
+    expect($scope.getProgramEventLabel()).toEqual(angular.toJson({
       syllabusId: 'foo',
       isIncentivized: true
     }));
+  });
+
+  it('should provide the mission pack event label if no program data is available', function() {
+    $scope.missionPackEventLabel = 'foo';
+
+    expect($scope.getProgramEventLabel()).toEqual('foo');
   });
 });
 

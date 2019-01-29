@@ -58,12 +58,14 @@ angular.module('robo.progressPod', [])
   ){
     var MissionRewardCoins = safeInject('MissionRewardCoins');
     var isProgressBarComplete = false;
-    var program = $scope.pod.program;
 
-    $scope.programEventLabel = angular.toJson({
-      syllabusId: program.syllabusId,
-      isIncentivized: Boolean(program.nextRewardDescription)
-    });
+    $scope.getProgramEventLabel = function getProgramEventLabel() {
+      var program = $scope.pod.program;
+      return program ? angular.toJson({
+        syllabusId: program.syllabusId,
+        isIncentivized: Boolean(program.nextRewardDescription)
+      }) : $scope.missionPackEventLabel;
+    };
 
     if ($scope.pod.programOverview) {
       $scope.completionPercentText =

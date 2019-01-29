@@ -46,7 +46,7 @@
                            tabindex="{{!flipped ? 0 : -1}}"
                            track-event
                            event-category="dashboard_goal_pod_program_cta"
-                           event-label="{{::programEventLabel}}"
+                           event-label="{{::getProgramEventLabel()}}"
                            scrub-label="false"
                            ng-href="{{::pod.program.card.ctaUrl}}"
                            ng-click="followLink($event, pod.program.card.ctaUrl)"
@@ -66,7 +66,7 @@
                             ng-click="flip($event)"
                             track-event
                             event-category="dashboard_goal_pod_show_info"
-                            event-label="{{::programEventLabel}}"
+                            event-label="{{::getProgramEventLabel()}}"
                             scrub-label="false"
                             aria-label="Program Info">
                         <i aria-hidden="true" class="icon-info"></i>
@@ -111,7 +111,7 @@
                         ng-click="flip($event); revertCardBack()"
                         track-event
                         event-category="dashboard_goal_pod_hide_info"
-                        event-label="{{::programEventLabel}}"
+                        event-label="{{::getProgramEventLabel()}}"
                         scrub-label="false"
                         aria-label="Program Info">
                     <i aria-hidden="true" class="icon-info" ng-style="::{color: '#' + pod.program.card.backgroundColor}"></i>

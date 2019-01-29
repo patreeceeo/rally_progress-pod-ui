@@ -116,7 +116,7 @@
                 confirm-cancel="{{changeGoalText.cancel}}"
                 track-event
                 event-category="dashboard_goal_pod_change_goal"
-                event-label="{{pod.program ? programEventLabel : missionPackEventLabel}}"
+                event-label="{{::getProgramEventLabel()}}"
                 scrub-label="false"
                 translate-comment="e.g. change your health goal"
                 translate>Change Goal</button>
@@ -129,7 +129,7 @@
                 confirm-cancel="{{quitGoalText.cancel}}"
                 track-event
                 event-category="dashboard_goal_pod_quit_goal"
-                event-label="{{pod.program ? programEventLabel : missionPackEventLabel}}"
+                event-label="{{::getProgramEventLabel()}}"
                 scrub-label="false"
                 translate-comment="e.g. quit your health goal"
                 translate>Quit Goal</button>
@@ -140,7 +140,7 @@
            ng-show="pod.type === ProgressPodTypes.Program || scrollableTotalPages < 1"
            track-event
            event-category="dashboard_goal_pod_view_details"
-           event-label="{{pod.program ? programEventLabel : missionPackEventLabel}}"
+           event-label="{{::getProgramEventLabel()}}"
            scrub-label="false"
            translate>View Details</a>
         <div class="navBtns" aria-hidden="true" ng-show="scrollableTotalPages > 1">
